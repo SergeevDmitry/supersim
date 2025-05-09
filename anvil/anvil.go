@@ -100,6 +100,9 @@ func (a *Anvil) Start(ctx context.Context) error {
 	if a.cfg.StartingTimestamp > 0 {
 		args = append(args, "--timestamp", fmt.Sprintf("%d", a.cfg.StartingTimestamp))
 	}
+	if a.cfg.StatePath != "" {
+		args = append(args, "--state", a.cfg.StatePath)
+	}
 
 	if len(a.cfg.GenesisJSON) > 0 && a.cfg.ForkConfig == nil {
 		tempFile, err := os.CreateTemp("", "genesis-*.json")

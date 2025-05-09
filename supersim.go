@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"path"
 	"strings"
 
 	"github.com/ethereum-optimism/optimism/op-service/predeploys"
@@ -62,6 +63,13 @@ func NewSupersim(log log.Logger, envPrefix string, closeApp context.CancelCauseF
 	networkConfig.L1Config.Host = cliConfig.L1Host
 	for i := range networkConfig.L2Configs {
 		networkConfig.L2Configs[i].Host = cliConfig.L2Host
+	}
+
+	if cliConfig.StateDir != "" {
+		networkConfig.L1Config.StatePath = path.Join(cliConfig.StateDir, fmt.Sprintf("/l1-%d.json", networkConfig.L1Config.ChainID))
+		for i := range networkConfig.L2Configs {
+			networkConfig.L2Configs[i].StatePath = path.Join(cliConfig.StateDir, fmt.Sprintf("/l2-%d.json", networkConfig.L2Configs[i].ChainID))
+		}
 	}
 
 	// Forward interop config

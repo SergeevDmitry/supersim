@@ -38,6 +38,8 @@ const (
 
 	OdysseyEnabledFlagName = "odyssey.enabled"
 
+	StateDirFlagName = "state.dir"
+
 	MaxL2Count = 5
 )
 
@@ -99,6 +101,12 @@ func BaseCLIFlags(envPrefix string) []cli.Flag {
 			Usage:   "Host address for L2 instances",
 			Value:   "127.0.0.1",
 			EnvVars: opservice.PrefixEnvVar(envPrefix, "L2_HOST"),
+		},
+		&cli.StringFlag{
+			Name:    StateDirFlagName,
+			Usage:   "Directory path to store chains states",
+			Value:   "",
+			EnvVars: opservice.PrefixEnvVar(envPrefix, "STATE_DIR"),
 		},
 		&cli.Uint64Flag{
 			Name:    InteropDelayFlagName,
@@ -174,6 +182,8 @@ type CLIConfig struct {
 
 	L1Host string
 	L2Host string
+
+	StateDir string
 }
 
 func ReadCLIConfig(ctx *cli.Context) (*CLIConfig, error) {
@@ -193,6 +203,8 @@ func ReadCLIConfig(ctx *cli.Context) (*CLIConfig, error) {
 		LogsDirectory: ctx.String(LogsDirectoryFlagName),
 
 		OdysseyEnabled: ctx.Bool(OdysseyEnabledFlagName),
+
+		StateDir: ctx.String(StateDirFlagName),
 	}
 
 	if ctx.Command.Name == ForkCommandName {

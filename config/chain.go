@@ -74,6 +74,8 @@ type ChainConfig struct {
 
 	// Optional
 	OdysseyEnabled bool
+
+	StatePath string
 }
 
 type NetworkConfig struct {
